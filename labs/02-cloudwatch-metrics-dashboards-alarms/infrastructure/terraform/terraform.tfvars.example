@@ -1,0 +1,19 @@
+aws_region         = "us-east-1"
+project_name       = "cw-metrics-alarms"
+environment        = "dev"
+vpc_cidr           = "10.0.0.0/16"
+public_subnet_cidr = "10.0.1.0/24"
+instance_type      = "t2.micro"
+instance_count     = 2
+
+# Email for SNS notifications (leave empty to skip subscription)
+notification_email = ""
+
+# S3 bucket name must be globally unique
+trade_reports_bucket_name = "my-trade-reports-CHANGE-ME"
+
+# DynamoDB alarm: consumed WCUs (sum) over 5 min
+dynamodb_write_alarm_threshold = 5
+
+# S3 alarm: delete requests in 24 hours
+s3_delete_alarm_threshold = 1

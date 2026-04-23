@@ -1,0 +1,28 @@
+aws_region     = "us-east-1"
+project_name   = "governance-monitoring"
+environment    = "dev"
+
+# VPC
+vpc_cidr           = "10.0.0.0/16"
+public_subnet_cidr = "10.0.1.0/24"
+public_subnet_cidr_2 = "10.0.2.0/24"
+
+# ASG
+instance_type        = "t2.micro"
+asg_min_size         = 1
+asg_max_size         = 2
+asg_desired_capacity = 1
+
+# CloudWatch alarm threshold (low for easy demo triggering)
+cpu_alarm_threshold = 20
+
+# Must be globally unique — change before applying
+cloudtrail_bucket_name = "my-governance-cloudtrail-logs-CHANGE-ME"
+
+# Email for SNS notifications (leave empty to skip subscription)
+notification_email = ""
+
+# Lambda settings
+lambda_timeout            = 240
+lambda_log_retention_days = 7
+lookback_minutes          = 10

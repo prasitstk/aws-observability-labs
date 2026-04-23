@@ -1,0 +1,55 @@
+name: Terraform CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-modules:
+    name: Validate Modules
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module:
+          - shared/modules/cw-vpc
+          - shared/modules/cw-instance-profile
+    steps:
+      - uses: actions/checkout@v5
+      - uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.5"
+      - name: Terraform Init
+        run: terraform -chdir=${{ matrix.module }} init -backend=false
+      - name: Terraform Format
+        run: terraform -chdir=${{ matrix.module }} fmt -check
+      - name: Terraform Validate
+        run: terraform -chdir=${{ matrix.module }} validate
+
+  validate-labs:
+    name: Validate Labs
+    runs-on: ubuntu-latest
+    needs: validate-modules
+    strategy:
+      fail-fast: false
+      matrix:
+        lab:
+          - labs/01-governance-monitoring-overview/infrastructure/terraform
+          - labs/02-cloudwatch-metrics-dashboards-alarms/infrastructure/terraform
+          - labs/03-ec2-detailed-monitoring-cloudwatch-agent/infrastructure/terraform
+          - labs/04-custom-metrics-structured-logging/infrastructure/terraform
+          - labs/05-dynamic-scaling-cloudwatch-alarms/infrastructure/terraform
+          - labs/06-bedrock-cloudwatch-log-insights/infrastructure/terraform
+    steps:
+      - uses: actions/checkout@v5
+      - uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.5"
+      - name: Terraform Init
+        run: terraform -chdir=${{ matrix.lab }} init -backend=false
+      - name: Terraform Format
+        run: terraform -chdir=${{ matrix.lab }} fmt -check
+      - name: Terraform Validate
+        run: terraform -chdir=${{ matrix.lab }} validate

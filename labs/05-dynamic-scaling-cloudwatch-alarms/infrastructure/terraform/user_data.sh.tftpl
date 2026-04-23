@@ -1,0 +1,190 @@
+#!/bin/bash
+# -----------------------------------------------------------------------------
+# Lab 05: Dynamic Scaling — ASG instance bootstrap
+# Installs stress-ng for CPU-based scaling tests, a simple HTTP health endpoint,
+# and a Python SQS order worker (systemd service) that drives the queue-depth
+# scaling loop.
+# -----------------------------------------------------------------------------
+
+set -euo pipefail
+
+echo "=== ASG Instance Bootstrap Starting ==="
+
+# --- 1. Install stress-ng, Python 3, boto3 for scaling tests + worker ---
+echo "=== Installing packages ==="
+dnf install -y stress-ng python3 python3-pip
+pip3 install --quiet boto3
+
+# --- 2. Simple HTTP health server (CPU path uses this endpoint) ---
+echo "=== Deploying health endpoint ==="
+mkdir -p /opt/health-server
+
+cat > /opt/health-server/app.py << 'PYEOF'
+import http.server
+import json
+import os
+import time
+
+START_TIME = time.time()
+PORT = int(os.environ.get('APP_PORT', '80'))
+
+class HealthHandler(http.server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/health':
+            data = {
+                'status': 'healthy',
+                'uptime_seconds': round(time.time() - START_TIME, 1),
+                'instance_id': os.popen('ec2-metadata --instance-id').read().strip().split()[-1],
+            }
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(data).encode())
+        else:
+            self.send_response(404)
+            self.end_headers()
+
+    def log_message(self, format, *args):
+        pass
+
+if __name__ == '__main__':
+    server = http.server.HTTPServer(('0.0.0.0', PORT), HealthHandler)
+    print(f'Health server on port {PORT}')
+    server.serve_forever()
+PYEOF
+
+cat > /etc/systemd/system/health-server.service << 'SVCEOF'
+[Unit]
+Description=Health Check Server
+After=network.target
+
+[Service]
+Type=simple
+Environment=APP_PORT=80
+ExecStart=/usr/bin/python3 /opt/health-server/app.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+SVCEOF
+
+# --- 3. SQS order worker (queue path polls messages and simulates processing) ---
+echo "=== Deploying order worker ==="
+mkdir -p /opt/order-worker
+
+cat > /opt/order-worker/worker.py << 'WORKEREOF'
+#!/usr/bin/env python3
+"""Financial order worker — polls SQS, simulates processing, deletes messages."""
+
+from __future__ import annotations
+
+import json
+import logging
+import os
+import signal
+import sys
+import time
+
+import boto3
+
+LOG = logging.getLogger("order-worker")
+LONG_POLL_SECONDS = 20
+MAX_MESSAGES = 1
+
+_shutdown = False
+
+
+def _handle_signal(signum, _frame):
+    global _shutdown
+    LOG.info("received signal %s, shutting down", signum)
+    _shutdown = True
+
+
+def _process(order, delay):
+    LOG.info(
+        "processing order id=%s symbol=%s side=%s qty=%s",
+        order.get("order_id"),
+        order.get("symbol"),
+        order.get("side"),
+        order.get("qty"),
+    )
+    time.sleep(delay)
+
+
+def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s %(name)s %(message)s",
+    )
+    queue_url = os.environ.get("QUEUE_URL")
+    region = os.environ.get("AWS_REGION")
+    delay = float(os.environ.get("PROCESS_DELAY", "2"))
+    if not queue_url or not region:
+        LOG.error("QUEUE_URL and AWS_REGION are required")
+        return 2
+    LOG.info("starting worker queue=%s region=%s delay=%ss", queue_url, region, delay)
+    signal.signal(signal.SIGTERM, _handle_signal)
+    signal.signal(signal.SIGINT, _handle_signal)
+    sqs = boto3.client("sqs", region_name=region)
+    while not _shutdown:
+        try:
+            response = sqs.receive_message(
+                QueueUrl=queue_url,
+                MaxNumberOfMessages=MAX_MESSAGES,
+                WaitTimeSeconds=LONG_POLL_SECONDS,
+                VisibilityTimeout=30,
+            )
+        except Exception:
+            LOG.exception("receive_message failed")
+            time.sleep(2)
+            continue
+        messages = response.get("Messages", [])
+        if not messages:
+            continue
+        for message in messages:
+            body = message.get("Body", "{}")
+            try:
+                order = json.loads(body)
+            except json.JSONDecodeError:
+                LOG.warning("non-json message, dropping: %s", body[:200])
+                order = {}
+            try:
+                _process(order, delay)
+                sqs.delete_message(
+                    QueueUrl=queue_url,
+                    ReceiptHandle=message["ReceiptHandle"],
+                )
+            except Exception:
+                LOG.exception("processing failed; message will retry after visibility timeout")
+    LOG.info("worker stopped")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+WORKEREOF
+
+cat > /etc/systemd/system/order-worker.service << SVCEOF
+[Unit]
+Description=Financial Order Worker (SQS poller)
+After=network.target
+
+[Service]
+Type=simple
+Environment=QUEUE_URL=${queue_url}
+Environment=AWS_REGION=${aws_region}
+Environment=PROCESS_DELAY=${worker_process_delay_seconds}
+ExecStart=/usr/bin/python3 /opt/order-worker/worker.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+SVCEOF
+
+systemctl daemon-reload
+systemctl enable health-server order-worker
+systemctl start health-server order-worker
+
+echo "=== Bootstrap Complete ==="

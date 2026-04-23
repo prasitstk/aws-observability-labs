@@ -1,0 +1,20 @@
+aws_region           = "us-east-1"
+project_name         = "dynamic-scaling"
+environment          = "dev"
+vpc_cidr             = "10.0.0.0/16"
+public_subnet_cidr   = "10.0.1.0/24"
+public_subnet_cidr_2 = "10.0.2.0/24"
+instance_type        = "t2.micro"
+asg_min_size         = 1
+asg_max_size         = 4
+asg_desired_capacity = 2
+target_cpu_value     = 50
+
+# SQS queue-depth simple scaling
+queue_name_suffix            = "orders"
+queue_scale_out_threshold    = 3
+queue_scale_in_threshold     = 1
+worker_process_delay_seconds = 2
+
+# Email for SNS notifications (leave empty to skip subscription)
+notification_email = ""

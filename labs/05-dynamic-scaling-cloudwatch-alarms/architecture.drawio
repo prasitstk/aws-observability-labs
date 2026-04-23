@@ -1,0 +1,193 @@
+<mxfile host="65bd71144e">
+    <diagram id="lab05-arch" name="Architecture">
+        <mxGraphModel dx="866" dy="761" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1040" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="loadgen" value="Load Generator&#xa;src/generate_load.py" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3E;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.client;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="315" width="72" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="email" value="Email Subscriber" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#DD344C;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.email;" parent="1" vertex="1">
+                    <mxGeometry x="1810" y="320" width="72" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="aws" value="AWS Cloud" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#232F3E;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_cloud_alt;verticalAlign=top;align=left;spacingLeft=30;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="220" y="40" width="1540" height="960" as="geometry"/>
+                </mxCell>
+                <mxCell id="region" value="us-east-1" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#147EBA;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_region;verticalAlign=top;align=left;spacingLeft=30;dashed=1;" parent="aws" vertex="1">
+                    <mxGeometry x="20" y="40" width="1500" height="900" as="geometry"/>
+                </mxCell>
+                <mxCell id="sqs" value="SQS Queue&#xa;orders" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=top;verticalAlign=bottom;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sqs;labelPosition=center;" parent="region" vertex="1">
+                    <mxGeometry x="60" y="234" width="72" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="metrics" value="CloudWatch&#xa;Metrics" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=top;verticalAlign=bottom;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;labelPosition=center;" parent="region" vertex="1">
+                    <mxGeometry x="260" y="234" width="72" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="metrics_lbl" value="AWS/SQS ApproximateNumberOfMessagesVisible&#xa;AWS/EC2 CPUUtilization (per ASG)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;fontStyle=2;" vertex="1" parent="region">
+                    <mxGeometry x="176" y="170" width="240" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarms_group" value="&amp;nbsp; &amp;nbsp;CloudWatch Alarms" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF5EB;strokeColor=#ED7100;strokeWidth=1;dashed=1;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontSize=12;fontStyle=1;" parent="region" vertex="1">
+                    <mxGeometry x="502" y="140" width="380" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_qh" value="queue_high&#xa;(&gt; 3 msgs)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="alarms_group" vertex="1">
+                    <mxGeometry x="40" y="50" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_qh_badge" value="ALARM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D62728;strokeColor=#D62728;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="alarms_group">
+                    <mxGeometry x="42" y="36" width="54" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_ql" value="queue_low&#xa;(&lt; 1 msg × 3)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="alarms_group" vertex="1">
+                    <mxGeometry x="40" y="170" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_ql_badge" value="ALARM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2CA02C;strokeColor=#2CA02C;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="alarms_group">
+                    <mxGeometry x="42" y="156" width="54" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_ch" value="step_high_cpu&#xa;(&gt; 70%)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="alarms_group" vertex="1">
+                    <mxGeometry x="230" y="50" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_ch_badge" value="ALARM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D62728;strokeColor=#D62728;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="alarms_group">
+                    <mxGeometry x="232" y="36" width="54" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_cl" value="step_low_cpu&#xa;(&lt; 25% × 3)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="alarms_group" vertex="1">
+                    <mxGeometry x="230" y="170" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_cl_badge" value="ALARM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2CA02C;strokeColor=#2CA02C;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="alarms_group">
+                    <mxGeometry x="232" y="156" width="54" height="16" as="geometry"/>
+                </mxCell>
+                <mxCell id="policies_group" value="&amp;nbsp; &amp;nbsp;Auto Scaling Policies" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF5EB;strokeColor=#ED7100;strokeWidth=1;dashed=1;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;fontSize=12;fontStyle=1;" parent="region" vertex="1">
+                    <mxGeometry x="932" y="140" width="400" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="p_simple_out" value="simple_scale_out&#xa;+1 capacity" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F8E8;strokeColor=#2CA02C;fontSize=11;align=center;" parent="policies_group" vertex="1">
+                    <mxGeometry x="20" y="40" width="170" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="p_simple_in" value="simple_scale_in&#xa;-1 capacity" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDECEC;strokeColor=#D62728;fontSize=11;align=center;" parent="policies_group" vertex="1">
+                    <mxGeometry x="20" y="190" width="170" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="p_step_out" value="step_scale_out&#xa;+1 (&gt;70%), +2 (&gt;90%)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F8E8;strokeColor=#2CA02C;fontSize=11;align=center;" parent="policies_group" vertex="1">
+                    <mxGeometry x="210" y="40" width="170" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="p_step_in" value="step_scale_in&#xa;-1 capacity" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FDECEC;strokeColor=#D62728;fontSize=11;align=center;" parent="policies_group" vertex="1">
+                    <mxGeometry x="210" y="190" width="170" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="p_target" value="target_tracking_cpu&#xa;ASGAverageCPUUtilization target" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF5EB;strokeColor=#ED7100;fontSize=11;fontStyle=1;align=center;" parent="policies_group" vertex="1">
+                    <mxGeometry x="40" y="110" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="sns" value="SNS Topic" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sns;" parent="region" vertex="1">
+                    <mxGeometry x="1370" y="240" width="72" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="vpc" value="VPC (10.0.0.0/16)" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#8C4FFF;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc2;verticalAlign=top;align=left;spacingLeft=30;dashed=0;" parent="region" vertex="1">
+                    <mxGeometry x="40" y="480" width="1420" height="400" as="geometry"/>
+                </mxCell>
+                <mxCell id="asg" value="Auto Scaling Group  (min=1  desired=2  max=4)" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=1;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#ED7100;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_auto_scaling_group;verticalAlign=top;align=left;spacingLeft=30;dashed=1;" parent="vpc" vertex="1">
+                    <mxGeometry x="30" y="40" width="1360" height="340" as="geometry"/>
+                </mxCell>
+                <mxCell id="az1" value="Availability Zone A" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=11;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#147EBA;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_availability_zone;verticalAlign=top;align=left;spacingLeft=30;dashed=1;" parent="asg" vertex="1">
+                    <mxGeometry x="40" y="50" width="600" height="270" as="geometry"/>
+                </mxCell>
+                <mxCell id="subnet1" value="Public Subnet (10.0.1.0/24)" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=11;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#7AA116;fillColor=#F2F6E8;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_subnet;verticalAlign=top;align=left;spacingLeft=30;dashed=0;" parent="az1" vertex="1">
+                    <mxGeometry x="20" y="40" width="560" height="210" as="geometry"/>
+                </mxCell>
+                <mxCell id="ec2_a" value="EC2 (AL2023)&#xa;order-worker.service&#xa;health-server :80" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.ec2;" parent="subnet1" vertex="1">
+                    <mxGeometry x="230" y="40" width="86" height="86" as="geometry"/>
+                </mxCell>
+                <mxCell id="az2" value="Availability Zone B" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=11;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#147EBA;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_availability_zone;verticalAlign=top;align=left;spacingLeft=30;dashed=1;" parent="asg" vertex="1">
+                    <mxGeometry x="700" y="50" width="600" height="270" as="geometry"/>
+                </mxCell>
+                <mxCell id="subnet2" value="Public Subnet (10.0.2.0/24)" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=11;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#7AA116;fillColor=#F2F6E8;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_subnet;verticalAlign=top;align=left;spacingLeft=30;dashed=0;" parent="az2" vertex="1">
+                    <mxGeometry x="20" y="40" width="560" height="210" as="geometry"/>
+                </mxCell>
+                <mxCell id="ec2_b" value="EC2 (AL2023)&#xa;order-worker.service&#xa;health-server :80" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=11;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.ec2;" parent="subnet2" vertex="1">
+                    <mxGeometry x="230" y="40" width="86" height="86" as="geometry"/>
+                </mxCell>
+                <mxCell id="lt_note" value="Launch Template:&#xa;AL2023 + user_data (stress-ng, health-server, order-worker)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF5EB;strokeColor=#ED7100;fontSize=11;align=center;" vertex="1" parent="vpc">
+                    <mxGeometry x="540" y="350" width="400" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_sqs_m" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;dashed=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#147EBA;" edge="1" parent="region" source="sqs" target="metrics">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_m_a" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#232F3E;" edge="1" parent="region" source="metrics" target="alarms_group">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_a_p" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#232F3E;" edge="1" parent="region" source="alarms_group" target="policies_group">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_a_sns" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=0;exitDx=0;exitDy=0;strokeColor=#232F3E;" edge="1" parent="region" source="alarms_group" target="sns">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="650" y="100"/>
+                            <mxPoint x="1400" y="100"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e_a_sns_lbl" value="notify" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=2;" connectable="0" vertex="1" parent="e_a_sns">
+                    <mxGeometry x="0.2" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e_asg_sqs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.1;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#2CA02C;strokeWidth=2;" edge="1" parent="region" source="asg" target="sqs">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_asg_sqs_lbl" value="worker poll / delete" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#2CA02C;fontStyle=2;" connectable="0" vertex="1" parent="e_asg_sqs">
+                    <mxGeometry x="-0.3" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e_asg_m" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;dashed=1;exitX=0.2;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;strokeColor=#147EBA;" edge="1" parent="region" source="asg" target="metrics">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_asg_m_lbl" value="EC2 CPUUtilization" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontColor=#147EBA;fontStyle=2;" connectable="0" vertex="1" parent="e_asg_m">
+                    <mxGeometry x="-0.2" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="legend" value="Legend — arrow styles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B0B0B0;align=left;verticalAlign=top;spacingLeft=12;spacingTop=6;fontSize=12;fontStyle=1;container=1;collapsible=0;" parent="region" vertex="1">
+                    <mxGeometry x="23" y="30" width="460" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend_sw1" style="endArrow=classic;html=1;strokeColor=#232F3E;strokeWidth=2;dashed=0;" edge="1" parent="legend">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="15" y="42" as="sourcePoint"/>
+                        <mxPoint x="95" y="42" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="legend_lbl1" value="&lt;b&gt;Control&lt;/b&gt; — CloudWatch alarm → scaling policy &amp; SNS notification" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;" vertex="1" parent="legend">
+                    <mxGeometry x="110" y="30" width="340" height="24" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend_sw2" style="endArrow=classic;html=1;strokeColor=#147EBA;strokeWidth=2;dashed=1;" edge="1" parent="legend">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="15" y="72" as="sourcePoint"/>
+                        <mxPoint x="95" y="72" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="legend_lbl2" value="&lt;b&gt;Metrics publishing&lt;/b&gt; — SQS depth &amp; EC2 CPU emit into CloudWatch" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#147EBA;" vertex="1" parent="legend">
+                    <mxGeometry x="110" y="60" width="340" height="24" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend_sw3" style="endArrow=classic;html=1;strokeColor=#2CA02C;strokeWidth=2;dashed=0;" edge="1" parent="legend">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="15" y="102" as="sourcePoint"/>
+                        <mxPoint x="95" y="102" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="legend_lbl3" value="&lt;b&gt;Worker traffic&lt;/b&gt; — ASG instances ReceiveMessage / DeleteMessage from SQS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#2CA02C;" vertex="1" parent="legend">
+                    <mxGeometry x="110" y="90" width="340" height="24" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_lg_sqs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#232F3E;" edge="1" parent="1" source="loadgen" target="sqs">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_lg_sqs_lbl" value="send_message_batch" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=10;fontStyle=2;" connectable="0" vertex="1" parent="e_lg_sqs">
+                    <mxGeometry y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e_sns_email" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#232F3E;" edge="1" parent="1" source="sns" target="email">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_p_asg" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeColor=#ED7100;strokeWidth=2;" edge="1" parent="1" source="policies_group" target="asg">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_p_asg_lbl" value="adjust desired capacity" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontStyle=2;" connectable="0" vertex="1" parent="e_p_asg">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

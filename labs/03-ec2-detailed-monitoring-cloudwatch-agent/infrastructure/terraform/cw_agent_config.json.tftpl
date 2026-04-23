@@ -1,0 +1,67 @@
+{
+  "agent": {
+    "metrics_collection_interval": ${collection_interval},
+    "run_as_user": "root"
+  },
+  "metrics": {
+    "namespace": "${namespace}",
+    "append_dimensions": {
+      "InstanceId": "$${aws:InstanceId}"
+    },
+    "metrics_collected": {
+      "cpu": {
+        "measurement": [
+          "cpu_usage_idle",
+          "cpu_usage_user",
+          "cpu_usage_system"
+        ],
+        "metrics_collection_interval": ${collection_interval},
+        "totalcpu": true
+      },
+      "mem": {
+        "measurement": [
+          "mem_used_percent",
+          "mem_available"
+        ],
+        "metrics_collection_interval": ${collection_interval}
+      },
+      "disk": {
+        "measurement": [
+          "disk_used_percent"
+        ],
+        "resources": [
+          "/"
+        ],
+        "metrics_collection_interval": ${collection_interval}
+      },
+      "diskio": {
+        "measurement": [
+          "diskio_reads",
+          "diskio_writes"
+        ],
+        "metrics_collection_interval": ${collection_interval}
+      },
+      "net": {
+        "measurement": [
+          "net_bytes_sent",
+          "net_bytes_recv"
+        ],
+        "metrics_collection_interval": ${collection_interval}
+      }
+    }
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/messages",
+            "log_group_name": "${log_group_name}",
+            "log_stream_name": "{instance_id}/syslog",
+            "retention_in_days": -1
+          }
+        ]
+      }
+    }
+  }
+}

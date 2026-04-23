@@ -1,0 +1,15 @@
+#!/bin/bash
+# -----------------------------------------------------------------------------
+# Lab 01: Governance Monitoring — ASG instance bootstrap
+# Installs stress-ng for CPU load testing to trigger CloudWatch alarms.
+# -----------------------------------------------------------------------------
+
+set -euo pipefail
+
+echo "=== ASG Instance Bootstrap Starting ==="
+
+# --- Install stress-ng for scaling tests ---
+echo "=== Installing stress-ng ==="
+dnf install -y stress-ng
+
+echo "=== Bootstrap Complete ==="

@@ -1,0 +1,19 @@
+aws_region         = "us-east-1"
+project_name       = "custom-metrics-logging"
+environment        = "dev"
+vpc_cidr           = "10.0.0.0/16"
+public_subnet_cidr = "10.0.1.0/24"
+instance_type      = "t2.micro"
+
+# Restrict inbound for the Flask API on port 5000. Default is wide open
+# for lab convenience — tighten to your load-generator IP if desired.
+orders_api_allowed_cidr = "0.0.0.0/0"
+
+# Email for SNS notifications (leave empty to skip subscription)
+notification_email = ""
+
+# CloudWatch Logs retention
+cloudwatch_log_retention_days = 30
+
+# p90 RequestLatency alarm threshold (milliseconds)
+request_latency_threshold_ms = 2000

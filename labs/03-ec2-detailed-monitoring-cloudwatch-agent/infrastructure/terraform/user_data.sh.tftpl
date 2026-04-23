@@ -1,0 +1,28 @@
+#!/bin/bash
+# -----------------------------------------------------------------------------
+# Lab 03: EC2 Detailed Monitoring + CloudWatch Agent
+# Installs CloudWatch Agent and configures it via SSM Parameter Store.
+# Instance runs in a public subnet with internet access.
+# -----------------------------------------------------------------------------
+
+set -euo pipefail
+
+CW_AGENT_CONFIG_PARAM="${cw_agent_config_param}"
+AWS_REGION="${aws_region}"
+
+echo "=== CloudWatch Agent Bootstrap Starting ==="
+
+# --- 1. Install CloudWatch Agent + stress load generator ---
+echo "=== Installing CloudWatch Agent + stress-ng ==="
+dnf install -y amazon-cloudwatch-agent stress-ng
+
+# --- 2. Fetch CW Agent config from SSM Parameter Store and start agent ---
+echo "=== Configuring CloudWatch Agent from SSM Parameter: $CW_AGENT_CONFIG_PARAM ==="
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+  -a fetch-config \
+  -m ec2 \
+  -s \
+  -c "ssm:$CW_AGENT_CONFIG_PARAM"
+
+echo "=== CloudWatch Agent started ==="
+echo "=== Bootstrap Complete ==="

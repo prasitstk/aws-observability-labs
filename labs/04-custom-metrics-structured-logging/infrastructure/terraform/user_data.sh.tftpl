@@ -1,0 +1,67 @@
+#!/bin/bash
+# -----------------------------------------------------------------------------
+# Lab 04: Custom Metrics + Structured Logging (EMF + PutMetricData)
+# Installs CloudWatch Agent, Python + Flask + boto3, deploys the Orders
+# API, fetches agent config from SSM Parameter Store, and starts the API
+# as a systemd service.
+# -----------------------------------------------------------------------------
+
+set -euo pipefail
+
+AWS_REGION="${aws_region}"
+EMF_NAMESPACE="${emf_namespace}"
+SDK_NAMESPACE="${sdk_namespace}"
+EMF_LOG_PATH="${emf_log_path}"
+SDK_LOG_PATH="${sdk_log_path}"
+CW_AGENT_PARAM="${cw_agent_config_param}"
+
+echo "=== Orders API bootstrap starting ==="
+
+# --- 1. Install packages ---
+dnf install -y amazon-cloudwatch-agent python3 python3-pip
+pip3 install flask boto3 --quiet
+
+# --- 2. Pre-create log files so tailing starts cleanly ---
+touch "$EMF_LOG_PATH" "$SDK_LOG_PATH"
+chown ec2-user:ec2-user "$EMF_LOG_PATH" "$SDK_LOG_PATH"
+
+# --- 3. Drop the Flask app ---
+install -o ec2-user -g ec2-user -m 0755 /dev/stdin /home/ec2-user/app.py << 'PYEOF'
+${app_code}
+PYEOF
+
+# --- 4. Fetch CW Agent config from SSM Parameter Store ---
+/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+  -a fetch-config \
+  -m ec2 \
+  -s \
+  -c "ssm:$CW_AGENT_PARAM"
+
+# --- 5. Systemd service for the Flask API ---
+cat > /etc/systemd/system/orders-api.service << SVCEOF
+[Unit]
+Description=Lab 04 Orders API (Flask)
+After=network-online.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user
+Environment=AWS_REGION=$AWS_REGION
+Environment=EMF_NAMESPACE=$EMF_NAMESPACE
+Environment=SDK_NAMESPACE=$SDK_NAMESPACE
+Environment=EMF_LOG_PATH=$EMF_LOG_PATH
+Environment=SDK_LOG_PATH=$SDK_LOG_PATH
+Environment=LISTEN_PORT=5000
+ExecStart=/usr/bin/python3 /home/ec2-user/app.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+SVCEOF
+
+systemctl daemon-reload
+systemctl enable --now orders-api
+
+echo "=== Orders API bootstrap complete ==="

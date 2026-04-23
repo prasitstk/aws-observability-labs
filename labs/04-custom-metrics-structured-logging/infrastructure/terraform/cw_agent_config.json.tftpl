@@ -1,0 +1,25 @@
+{
+  "agent": {
+    "run_as_user": "root"
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "${emf_log_path}",
+            "log_group_name": "${emf_log_group}",
+            "log_stream_name": "{instance_id}",
+            "retention_in_days": -1
+          },
+          {
+            "file_path": "${sdk_log_path}",
+            "log_group_name": "${sdk_log_group}",
+            "log_stream_name": "{instance_id}",
+            "retention_in_days": -1
+          }
+        ]
+      }
+    }
+  }
+}

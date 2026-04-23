@@ -1,0 +1,192 @@
+<mxfile host="65bd71144e">
+    <diagram id="lab04-arch" name="Architecture">
+        <mxGraphModel dx="897" dy="635" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="820" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="aws" value="AWS Cloud" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#232F3E;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_aws_cloud_alt;verticalAlign=top;align=left;spacingLeft=30;dashed=0;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="20" width="1460" height="720" as="geometry"/>
+                </mxCell>
+                <mxCell id="region" value="us-east-1" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#147EBA;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_region;verticalAlign=top;align=left;spacingLeft=30;dashed=1;" parent="aws" vertex="1">
+                    <mxGeometry x="20" y="40" width="1420" height="665" as="geometry"/>
+                </mxCell>
+                <mxCell id="vpc" value="VPC (10.0.0.0/16)" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#8C4FFF;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc2;verticalAlign=top;align=left;spacingLeft=30;dashed=0;" parent="region" vertex="1">
+                    <mxGeometry x="30" y="200" width="390" height="370" as="geometry"/>
+                </mxCell>
+                <mxCell id="subnet" value="Public Subnet (10.0.1.0/24)" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=11;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#7AA116;fillColor=#F2F6E8;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_subnet;verticalAlign=top;align=left;spacingLeft=30;dashed=0;" parent="vpc" vertex="1">
+                    <mxGeometry x="20" y="40" width="350" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="sg" value="Security Group&#xa;(ingress 5000)" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=10;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;strokeColor=#DD344C;fillColor=none;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_security_group;verticalAlign=top;align=left;spacingLeft=30;dashed=0;" parent="subnet" vertex="1">
+                    <mxGeometry x="90" y="50" width="190" height="222" as="geometry"/>
+                </mxCell>
+                <mxCell id="ec2" value="EC2 — Orders API&#xa;Flask :5000&#xa;CloudWatch Agent" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#ED7100;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.ec2;" parent="sg" vertex="1">
+                    <mxGeometry x="60" y="60" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="role" value="Instance Profile&#xa;PutMetricData + Logs" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#DD344C;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.role;" parent="sg" vertex="1">
+                    <mxGeometry x="66" y="170" width="52" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="ssm" value="SSM Parameter Store&#xa;AmazonCloudWatch-*&#xa;agent JSON (2 log streams)" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=middle;verticalAlign=middle;align=left;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.systems_manager;labelPosition=right;" parent="region" vertex="1">
+                    <mxGeometry x="310" y="34" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="emflog" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="region" vertex="1">
+                    <mxGeometry x="520" y="240" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="emflog_badge" value="LOGS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#147EBA;strokeColor=#147EBA;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="533" y="220" width="44" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="emflog_label" value="/cw-labs/.../orders-emf&#xa;(EMF records)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="475" y="310" width="160" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="sdklog" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="region" vertex="1">
+                    <mxGeometry x="520" y="390" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="sdklog_badge" value="LOGS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#147EBA;strokeColor=#147EBA;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="533" y="370" width="44" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="sdklog_label" value="/cw-labs/.../orders-sdk&#xa;(SDK audit)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="475" y="460" width="160" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="emfmetric" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="region" vertex="1">
+                    <mxGeometry x="780" y="240" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="emfmetric_badge" value="METRICS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=#232F3E;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="780" y="188" width="64" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="emfmetric_label" value="CWLabs/OrderServiceEMF&#xa;auto-extracted by CW" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="725" y="214" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="sdkmetric" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="region" vertex="1">
+                    <mxGeometry x="780" y="564" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="sdkmetric_badge" value="METRICS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=#232F3E;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="716" y="610" width="64" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="sdkmetric_label" value="CWLabs/OrderServiceSDK&#xa;PutMetricData" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="664" y="634" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="mi_icon" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="region" vertex="1">
+                    <mxGeometry x="780" y="410" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="mi_badge" value="METRICS INSIGHTS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=#232F3E;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="655" y="420" width="120" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="mi_label" value="SQL over metrics&#xa;(AVG, SUM, GROUP BY)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="650" y="445" width="150" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="li_icon" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="region" vertex="1">
+                    <mxGeometry x="635" y="54" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="li_badge" value="LOGS INSIGHTS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#147EBA;strokeColor=#147EBA;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="613" y="34" width="114" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="li_label" value="stats / filter / fields" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="600" y="124" width="140" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="dash_icon" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="region" vertex="1">
+                    <mxGeometry x="1040" y="380" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="dash_label" value="Mixed widgets&#xa;(Metrics + Logs + Alarm)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="990" y="450" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_icon" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=middle;verticalAlign=middle;align=left;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;labelPosition=right;" parent="region" vertex="1">
+                    <mxGeometry x="1250" y="238" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_badge" value="ALARM" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#B7472A;strokeColor=#B7472A;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="1260" y="168" width="46" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="alarm_label" value="request-latency-alarm&#xa;p90 RequestLatency &gt; 2000ms&#xa;period=60s, eval=2" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="1200" y="188" width="180" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="sns" value="SNS Topic&#xa;orders-alerts" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=middle;verticalAlign=middle;align=left;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.sns;labelPosition=right;" parent="region" vertex="1">
+                    <mxGeometry x="1250" y="420" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="email" value="Operator" style="sketch=0;outlineConnect=0;fillColor=#82B366;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.users;" parent="region" vertex="1">
+                    <mxGeometry x="1260" y="550" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="eB" value="fetch-config (ssm:)" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#E7157B;" parent="region" source="ssm" target="ec2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eC" value="tail EMF log" style="endArrow=classic;html=1;rounded=0;fontSize=10;dashed=1;strokeColor=#147EBA;" parent="region" source="ec2" target="emflog" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eD" value="tail SDK log" style="endArrow=classic;html=1;rounded=0;fontSize=10;dashed=1;strokeColor=#147EBA;" parent="region" source="ec2" target="sdklog" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eE" value="PutMetricData" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#B7472A;strokeWidth=2;" parent="region" source="ec2" target="sdkmetric" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="560" y="599"/>
+                            <mxPoint x="710" y="599"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="eF" value="auto-extract" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#232F3E;" parent="region" source="emflog" target="emfmetric" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eG" value="query" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#232F3E;" parent="region" source="emfmetric" target="mi_icon" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eH" value="query" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#232F3E;" parent="region" source="sdkmetric" target="mi_icon" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eI" value="query" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#147EBA;dashed=1;" parent="region" source="emflog" target="li_icon" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eJ" value="visualizes" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#147EBA;dashed=1;" parent="region" source="emfmetric" target="dash_icon" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eK" value="visualizes" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#147EBA;dashed=1;" parent="region" source="sdkmetric" target="dash_icon" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eL" value="evaluates p90" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#B7472A;strokeWidth=2;" parent="region" source="emfmetric" target="alarm_icon" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eM" value="publish" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#232F3E;" parent="region" source="alarm_icon" target="sns" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eN" value="email" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#232F3E;" parent="region" source="sns" target="email" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ci_icon" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#E7157B;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.cloudwatch_2;" parent="region" vertex="1">
+                    <mxGeometry x="852" y="30" width="70" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="ci_badge" value="CONTRIBUTOR INSIGHTS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#232F3E;strokeColor=#232F3E;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="820" y="10" width="134" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="ci_label" value="orders-error-contributors&#xa;top orderType where&#xa;$.FailureCount &gt; 0" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=10;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="800" y="100" width="174" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="eO" value="JSON log rule" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#232F3E;" parent="region" source="emflog" target="ci_icon" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="eP" value="top contributors" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#147EBA;dashed=1;" parent="region" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="940" y="71.77" as="sourcePoint"/>
+                        <mxPoint x="1093" y="390.0006259975173" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1093" y="71.77"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="user" value="Load generator&#xa;generate_load.py" style="sketch=0;outlineConnect=0;fillColor=#82B366;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.users;" parent="region" vertex="1">
+                    <mxGeometry x="70" y="574" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="eA" value="POST /orders" style="endArrow=classic;html=1;rounded=0;fontSize=10;strokeColor=#82B366;strokeWidth=2;" parent="region" source="user" target="ec2" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="100" y="540"/>
+                            <mxPoint x="100" y="480"/>
+                            <mxPoint x="100" y="385"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="dash_badge" value="DASHBOARD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#147EBA;strokeColor=#147EBA;fontColor=#FFFFFF;fontSize=9;fontStyle=1;verticalAlign=middle;align=center;" parent="region" vertex="1">
+                    <mxGeometry x="1026" y="352" width="104" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend" value="Legend: green = client traffic (POST /orders); solid black = metric/event flow (PutMetricData, auto-extract, SNS publish); blue dashed = telemetry (agent tails, queries, visualization); red = alarm-driven path (p90 breach → SNS).&amp;nbsp;&lt;div&gt;Two custom-metric techniques share the same EC2: EMF writes JSON to a tailed file; PutMetricData calls straight into CloudWatch Metrics. Both feed the same dashboard, and the p90 alarm watches EMF.&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#B3B3B3;fontSize=12;align=left;spacingLeft=8;verticalAlign=middle;" parent="1" vertex="1">
+                    <mxGeometry x="220" y="755" width="1220" height="50" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

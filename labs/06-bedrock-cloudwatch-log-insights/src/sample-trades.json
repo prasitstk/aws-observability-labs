@@ -1,0 +1,10 @@
+[
+  { "symbol": "AAPL", "side": "buy", "qty": 120, "price": 184.25, "venue": "NASDAQ" },
+  { "symbol": "MSFT", "side": "sell", "qty": 50, "price": 412.10, "venue": "NASDAQ" },
+  { "symbol": "TSLA", "side": "buy", "qty": 10, "venue": "NASDAQ" },
+  { "symbol": "NVDA", "side": "buy", "qty": 30, "price": 820.00, "stopPrice": 815.00, "venue": "NASDAQ" },
+  { "symbol": "JPM", "side": "sell", "qty": 200, "price": 198.40, "venue": "NYSE" },
+  { "symbol": "GS", "side": "buy", "qty": 15, "price": 462.55, "venue": "NYSE" },
+  { "symbol": "XOM", "side": "sell", "qty": 80, "venue": "NYSE" },
+  { "symbol": "KO", "side": "buy", "qty": 300, "price": 60.90, "venue": "NYSE" }
+]

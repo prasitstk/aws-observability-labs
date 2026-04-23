@@ -1,0 +1,18 @@
+aws_region         = "us-east-1"
+project_name       = "ec2-detailed-cw-agent"
+environment        = "dev"
+vpc_cidr           = "10.0.0.0/16"
+public_subnet_cidr = "10.0.1.0/24"
+instance_type      = "t2.micro"
+instance_count     = 2
+
+# Email for SNS notifications (leave empty to skip subscription)
+notification_email = ""
+
+# CloudWatch Agent settings
+cw_agent_collection_interval  = 60
+cloudwatch_log_retention_days = 30
+
+# High-CPU stop-action alarm
+high_cpu_threshold          = 75
+high_cpu_evaluation_periods = 1

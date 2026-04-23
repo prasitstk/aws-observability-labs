@@ -1,0 +1,39 @@
+aws_region   = "us-east-1"
+project_name = "bedrock-log-insights"
+environment  = "dev"
+
+# Leave bucket_name_override empty to auto-generate a globally-unique name
+# from project + account ID + region.
+# bucket_name_override = "my-unique-bedrock-lab-bucket"
+
+trade_input_prefix  = "trade-input/"
+trade_output_prefix = "trade-output/"
+
+# Bedrock model (Claude Haiku 4.5 via cross-region inference profile).
+bedrock_model_id             = "us.anthropic.claude-haiku-4-5-20251001-v1:0"
+bedrock_foundation_model_arn = "arn:aws:bedrock:*::foundation-model/anthropic.claude-haiku-4-5-20251001-v1:0"
+
+# Lambda tuning
+trade_processor_timeout  = 60
+log_analyzer_timeout     = 300
+log_analyzer_memory_size = 256
+
+# CloudWatch log retention (days). 30 days gives a longer post-mortem window
+# for Bedrock-assisted analysis.
+cloudwatch_log_retention_days = 30
+
+# Email address for SNS alarm notifications. Leave empty to skip subscription.
+# notification_email = "you@example.com"
+
+# p90 threshold for the log-analyzer Lambda duration alarm (ms). Bedrock
+# invocations are slow; tune after observing real traffic.
+analyzer_duration_p90_threshold_ms = 25000
+
+# Keep this false on first apply — the trade processor will hit
+# AccessDeniedException when publishing its CloudWatch metric, which gives
+# Bedrock something interesting to summarise. Flip to true to "fix" the role
+# and re-upload the sample to see a clean summary.
+grant_processor_putmetric = false
+
+# Number of most-recent log events the analyzer forwards to Bedrock.
+recent_events_limit = 50
