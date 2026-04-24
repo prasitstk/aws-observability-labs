@@ -17,7 +17,7 @@ jobs:
           - shared/modules/cw-vpc
           - shared/modules/cw-instance-profile
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: "1.5"
@@ -43,7 +43,7 @@ jobs:
           - labs/05-dynamic-scaling-cloudwatch-alarms/infrastructure/terraform
           - labs/06-bedrock-cloudwatch-log-insights/infrastructure/terraform
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: "1.5"
